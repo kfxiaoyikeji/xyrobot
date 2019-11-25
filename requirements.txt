@@ -1,0 +1,5 @@
+gpiozero==1.5.1
+pixel_ring.egg==info
+pixel_ring==0.1.0
+PyYAML==5.1.2
+robotframework==3.1.2

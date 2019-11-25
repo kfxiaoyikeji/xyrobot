@@ -11,7 +11,7 @@ location: '北京'
 # led的正极针脚为5
 # 该库使用Broadcom（BCM）引脚编号作为GPIO引脚，而不是物理（BOARD）编号。 
 # 与RPi.GPIO库不同，这是不可配置的。
-led_foot: 5
+led_foot:5
 # led灯的亮度，取值范围1-100,默认为10,越大越费电
 led_brightness: 10
 # led灯的图案样式，默认为googlehome，另外一个为echo，如果使用googlehome

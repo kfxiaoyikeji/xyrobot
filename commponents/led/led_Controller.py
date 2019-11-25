@@ -11,11 +11,11 @@ import time
 from pixel_ring import pixel_ring
 #导入gpiozero，控制led
 from gpiozero import LED
+
 #LED（5）代表了使用的是5的引脚，5的引脚为正极
 power = LED(5)
 #打开led灯
 power.on()
-
 # 设置led的亮度，取值范围为1-100的整数
 pixel_ring.set_brightness(10)
 
@@ -24,6 +24,23 @@ pixel_ring.set_brightness(10)
 # 默认为googlehome的方式，主要为彩色，echo主要为蓝色
 #pixel_ring.change_pattern('echo')
 
+
+
+def wakeup():
+    pixel_ring.wakeup()
+    
+def think():
+    pixel_ring.think()
+    
+def speak():
+    pixel_ring.speak()
+    
+def off():
+    pixel_ring.off()
+    power.off()
+
+
+'''
 if __name__ == '__main__':
     while True:
 
@@ -50,3 +67,4 @@ if __name__ == '__main__':
     time.sleep(1)
 
 power.off()
+'''
