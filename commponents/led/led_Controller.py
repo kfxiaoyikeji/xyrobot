@@ -24,7 +24,8 @@ pixel_ring.set_brightness(10)
 # 默认为googlehome的方式，主要为彩色，echo主要为蓝色
 #pixel_ring.change_pattern('echo')
 
-
+def __init__():
+    super().__init__()
 
 def wakeup():
     pixel_ring.wakeup()
@@ -37,10 +38,12 @@ def speak():
     
 def off():
     pixel_ring.off()
+
+def powerOff():
     power.off()
 
 
-'''
+
 if __name__ == '__main__':
     while True:
 
@@ -67,4 +70,4 @@ if __name__ == '__main__':
     time.sleep(1)
 
 power.off()
-'''
+
