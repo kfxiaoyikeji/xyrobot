@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Record audio from 4 mic array, and then search the keyword "snowboy".
 After finding the keyword, Direction Of Arrival (DOA) is estimated.

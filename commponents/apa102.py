@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 from https://github.com/tinue/APA102_Pi
 This is the main driver module for APA102 LEDs

@@ -1,27 +1,29 @@
-
+# -*- coding: utf-8 -*-
 import apa102
 import time
 import threading
 from gpiozero import LED
+#使用队列对led灯进行控制，当发生唤醒后，按照队列的方式进行播放，从而避免控制冲突
 try:
     import queue as Queue
 except ImportError:
     import Queue as Queue
 
+#引入两个LED灯的播放式样，推荐使用googlehome，比较漂亮
 from alexa_led_pattern import AlexaLedPattern
 from google_home_led_pattern import GoogleHomeLedPattern
 
 class Pixels:
+    #这里定义的是LED灯的数量，这个mic有12个led可以进行控制
     PIXELS_N = 12
-
+    #这里是构造器，参数pattern采用googlehome的样式进行配置
     def __init__(self, pattern=GoogleHomeLedPattern):
         self.pattern = pattern(show=self.show)
-        
+        #这个是驱动程序，apa102为led的驱动程序
         self.dev = apa102.APA102(num_led=self.PIXELS_N)
-        
+        #配置led灯的引脚号，这里是5,不可改变
         self.power = LED(5)
         self.power.on()
-
         self.queue = Queue.Queue()
         #创建一个线程
         #target为需要线程去执行的方法名
@@ -32,7 +34,7 @@ class Pixels:
         self.thread.daemon = True
         #启动这个线程
         self.thread.start()
-
+        #这里记录最后一次的方位，这个4mic通过这个参数定位声音来源的方位
         self.last_direction = None
 
     def wakeup(self, direction=0):
@@ -84,12 +86,16 @@ if __name__ == '__main__':
 
         try:
             pixels.wakeup()
+            print('被唤醒。。。')
             time.sleep(3)
             pixels.think()
+            print('在思考。。。')
             time.sleep(3)
             pixels.speak()
+            print('被讲话。。。')
             time.sleep(6)
             pixels.off()
+            print('关掉led。。。')
             time.sleep(3)
         except KeyboardInterrupt:
             break
