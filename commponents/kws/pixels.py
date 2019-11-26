@@ -76,6 +76,31 @@ class Pixels:
             self.dev.set_pixel(i, int(data[4*i + 1]), int(data[4*i + 2]), int(data[4*i + 3]))
 
         self.dev.show()
+        
+    def positionToDirection(self):
+        if self.last_direction != None:
+            position = self.last_direction
+            print(position)
+            if (position >= 337.5 and position <= 360) or (position >= 0 and position <= 22.5) :
+                return 'b' #正后方
+            if (position > 22.5 and position <= 67.5):
+                return 'lb'#左后方
+            if (position > 67.5 and position <= 112.5):
+                return 'l'#正左方
+            if (position > 112.5 and position <= 157.5):
+                return 'lf'#左前方
+            if (position > 157.5 and position <= 202.5):
+                return 'f'#正前方
+            if (position > 202.5 and position <= 247.5):
+                return 'rf'#右前方
+            if (position > 247.5 and position <= 292.5):
+                return 'r'#正右方
+            if (position > 292.5 and position < 337.5):
+                return 'rb'#右后方
+        else:
+            return ''
+        
+        
 
 
 pixels = Pixels()

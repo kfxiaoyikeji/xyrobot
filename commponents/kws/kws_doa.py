@@ -38,6 +38,7 @@ def main():
         try:
             time.sleep(1)
         except KeyboardInterrupt:
+            print('STOP')
             break
 
     src.recursive_stop()
