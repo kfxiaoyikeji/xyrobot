@@ -80,6 +80,7 @@ if __name__ == '__main__':
 ********************************************************              
               ''')
     print(config.get('xyrobot_name'))
+    print(config.get('/baidu_yuyin/appid'))
     xyRobot = XYRobot()
     '''
     xyRobot.train('/home/pi/Documents/workspace/xyrobot/staticData/xiaojiejie.wav','/home/pi/Documents/workspace/xyrobot/staticData/xiaojiejie1.wav','/home/pi/Documents/workspace/xyrobot/staticData/xiaojiejie2.wav','/home/pi/Documents/workspace/xyrobot/staticData/xiaojiejie.pmdl')
