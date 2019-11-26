@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 import os
+import random
 from common import config, constants
 from voice_engine.source import Source
 from voice_engine.channel_picker import ChannelPicker
@@ -17,6 +18,8 @@ class XYRobot(object):
     src = Source(rate=16000, channels=4, frames_size=320)
     ch1 = ChannelPicker(channels=4, pick=1)
     #这里需要填写pmdl的绝对路径
+    #kws = KWS()
+    #kws = KWS(os.path.join(constants.DATA_PATH ,config.get('kws_file_name','')))
     kws = KWS(os.path.join(constants.DATA_PATH ,config.get('kws_file_name','')))
     doa = DOA(rate=16000)
     
@@ -27,21 +30,19 @@ class XYRobot(object):
         def on_detected(keyword):
             position = self.doa.get_direction()
             pixels.wakeup(position)
+            voice = os.path.join(constants.DATA_PATH,'sysvoices','sysvoice'+str(random.randint(1,8))+'.mp3')
             direction = pixels.positionToDirection()
-            self.kws.set_callback(on_detected)
-            
             print('detected {} at direction {} is {}'.format(keyword, position,direction))
+            pixels.off()
+            pixels.speak(voice)
+            print(str(keyword)+voice)
+            
+            
         self.kws.set_callback(on_detected)
+        self.src.recursive_start()
+            
         config.init()       
         
-    def run(self):
-        self.src.recursive_start()
-        while True:
-            try:
-                time.sleep(1)
-            except KeyboardInterrupt:
-                break
-        self.src.recursive_stop()
         
     def train(self, w1, w2, w3, m):
             '''
@@ -82,8 +83,14 @@ if __name__ == '__main__':
     print(config.get('xyrobot_name'))
     print(config.get('/baidu_yuyin/appid'))
     xyRobot = XYRobot()
-    '''
-    xyRobot.train('/home/pi/Documents/workspace/xyrobot/staticData/xiaojiejie.wav','/home/pi/Documents/workspace/xyrobot/staticData/xiaojiejie1.wav','/home/pi/Documents/workspace/xyrobot/staticData/xiaojiejie2.wav','/home/pi/Documents/workspace/xyrobot/staticData/xiaojiejie.pmdl')
-    '''
-    xyRobot.run()
     
+    '''
+    xyRobot.train('/home/pi/Documents/workspace/xyrobot/staticData/jingangbabi.wav','/home/pi/Documents/workspace/xyrobot/staticData/jingangbabi1.wav','/home/pi/Documents/workspace/xyrobot/staticData/jingangbabi2.wav','/home/pi/Documents/workspace/xyrobot/staticData/jingangbabi.pmdl')
+    '''
+    
+    while True:
+        try:
+            time.sleep(1)
+        except KeyboardInterrupt:
+            break
+    xyRobot.src.recursive_stop()

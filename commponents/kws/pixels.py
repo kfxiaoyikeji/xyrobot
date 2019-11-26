@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import apa102
 import time
 import threading
@@ -55,8 +56,9 @@ class Pixels:
     def think(self):
         self.put(self.pattern.think)
 
-    def speak(self):
+    def speak(self,voice):
         self.put(self.pattern.speak)
+        os.system("sudo mpg123 "+voice)
 
     def off(self):
         self.put(self.pattern.off)
