@@ -32,6 +32,7 @@ def main():
     kws.set_callback(on_detected)
 
     src.recursive_start()
+    
     while True:
         try:
             time.sleep(1)

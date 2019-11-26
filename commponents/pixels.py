@@ -16,15 +16,21 @@ class Pixels:
 
     def __init__(self, pattern=GoogleHomeLedPattern):
         self.pattern = pattern(show=self.show)
-
+        
         self.dev = apa102.APA102(num_led=self.PIXELS_N)
         
         self.power = LED(5)
         self.power.on()
 
         self.queue = Queue.Queue()
+        #创建一个线程
+        #target为需要线程去执行的方法名
+        #args参数为线程执行方法接收的参数，该属性是一个元组，如果只有一个参数也需要在末尾加
+        #逗号
         self.thread = threading.Thread(target=self._run)
+        #开启线程的守护进程，设置为True
         self.thread.daemon = True
+        #启动这个线程
         self.thread.start()
 
         self.last_direction = None
