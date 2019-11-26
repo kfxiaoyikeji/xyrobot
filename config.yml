@@ -22,6 +22,7 @@ led_pattern: ''
 
 #############################recording-config####################
 snowboy_token: '6c4e7af384ec9fedbb42c82fefe73559dfabfa0c'
+kws_file_name: 'xiaojiejie.pmdl'
 recording_timeout: 5 # 录制的语音最大长度（秒）
 
 # 语音合成服务配置
