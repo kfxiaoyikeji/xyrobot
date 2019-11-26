@@ -16,6 +16,7 @@ import requests
 class XYRobot(object):
     src = Source(rate=16000, channels=4, frames_size=320)
     ch1 = ChannelPicker(channels=4, pick=1)
+    #这里需要填写pmdl的绝对路径
     kws = KWS(os.path.join(constants.DATA_PATH ,config.get('kws_file_name','')))
     doa = DOA(rate=16000)
     
