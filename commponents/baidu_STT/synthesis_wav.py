@@ -20,9 +20,10 @@ strings = [' 好的主人，马上为您开块一点',
           ' 来啦',' 来咯',' 我在呢',' 我在',' 在呢',' 好的',' 欧克','想我了?'
           ]
 i = 0
+print('per:'+str(config.get('/baidu_yuyin/per')))
 for _str in strings:
     result  = aipSpeech.synthesis(_str, 'zh', 1, {
-        'vol': 5, 'per': config.get('/baidu_yuyin/per',4),
+        'vol': 5, 'per': config.get('/baidu_yuyin/per',0),
     })
     # 识别正确返回语音二进制 错误则返回dict 参照下面错误码
     if not isinstance(result, dict):

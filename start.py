@@ -2,6 +2,7 @@
 import time
 import os
 import random
+import signal,sys
 from common import config, constants
 from voice_engine.source import Source
 from voice_engine.channel_picker import ChannelPicker
@@ -9,12 +10,16 @@ from voice_engine.kws import KWS
 from voice_engine.doa_respeaker_4mic_array import DOA
 from commponents.kws.pixels import pixels
 
+from commponents.baidu_STT import record
+
 # Base64编码是一种“防君子不防小人”的编码方式 生成的编码可逆，后一两位可能有“=”，生成的编码都是ascii字符
 import base64
 # requests库是一个常用的用于http请求的模块，它使用python语言编写，可以方便的对网页进行爬取，是学习python爬虫的较好的http请求模块。
 import requests
 
 class XYRobot(object):
+    #判断是否可以进行录音
+    recording = True
     src = Source(rate=16000, channels=4, frames_size=320)
     ch1 = ChannelPicker(channels=4, pick=1)
     #这里需要填写pmdl的绝对路径
@@ -33,16 +38,49 @@ class XYRobot(object):
             voice = os.path.join(constants.DATA_PATH,'sysvoices','sysvoice'+str(random.randint(1,8))+'.mp3')
             direction = pixels.positionToDirection()
             print('detected {} at direction {} is {}'.format(keyword, position,direction))
-            pixels.off()
             pixels.speak(voice)
             print(str(keyword)+voice)
+            self.recording = True
+            #开始录音
+            if self.recording:
+                outputtext = record.record()
+                
+                if (u'退下') in outputtext:
+                    self.recording = False
+                    os.system("sudo mpg123 staticData/sysvoices/sysvoice6.mp3")
+                    pixels.off()
+                
+                if (u'开风扇') in outputtext:
+                    os.system("sudo mpg123 turnon.mp3")
+        
+        
+                if (u'快一点') in outputtext: 
+                    os.system("sudo mpg123 faster.mp3")
+        
+                            
+                if (u'慢一点') in outputtext:
+                    os.system("sudo mpg123 lower.mp3")
+        
+        
+                if (u'关风扇') in outputtext:
+                    os.system("sudo mpg123 off.mp3")
             
             
         self.kws.set_callback(on_detected)
         self.src.recursive_start()
             
-        config.init()       
+        config.init()
         
+        
+    def sigint_handler(self,signum, frame):
+        record.stream.stop_stream()
+        record.stream.close()
+        record.p.terminate()
+        
+        self.src.recursive_stop()
+        
+        print 'catched interrupt signal!'
+        sys.exit(0)
         
     def train(self, w1, w2, w3, m):
             '''
@@ -80,12 +118,12 @@ if __name__ == '__main__':
 *                     此项目暂时不开源                    *
 ********************************************************              
               ''')
-    print(config.get('xyrobot_name'))
-    print(config.get('/baidu_yuyin/appid'))
     xyRobot = XYRobot()
+    # 注册ctrl-c中断
+    signal.signal(signal.SIGINT, xyRobot.sigint_handler)
     
     '''
-    xyRobot.train('/home/pi/Documents/workspace/xyrobot/staticData/jingangbabi.wav','/home/pi/Documents/workspace/xyrobot/staticData/jingangbabi1.wav','/home/pi/Documents/workspace/xyrobot/staticData/jingangbabi2.wav','/home/pi/Documents/workspace/xyrobot/staticData/jingangbabi.pmdl')
+    xyRobot.train('/home/pi/Documents/workspace/xyrobot/staticData/ellaella0.wav','/home/pi/Documents/workspace/xyrobot/staticData/ellaella1.wav','/home/pi/Documents/workspace/xyrobot/staticData/ellaella2.wav','/home/pi/Documents/workspace/xyrobot/staticData/ellaella.pmdl')
     '''
     
     while True:
@@ -93,4 +131,4 @@ if __name__ == '__main__':
             time.sleep(1)
         except KeyboardInterrupt:
             break
-    xyRobot.src.recursive_stop()
+    xyRobot.sigint_handler()

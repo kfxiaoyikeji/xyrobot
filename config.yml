@@ -22,8 +22,8 @@ led_pattern: ''
 
 #############################recording-config####################
 snowboy_token: '6c4e7af384ec9fedbb42c82fefe73559dfabfa0c'
-kws_file_name: 'jingangbabi.pmdl'
-recording_timeout: 5 # 录制的语音最大长度（秒）
+kws_file_name: 'xiaobai.pmdl'
+recording_timeout: 3 # 录制的语音最大长度（秒）
 
 # 语音合成服务配置
 # 可选值：
@@ -49,7 +49,7 @@ baidu_yuyin:
     api_key: 'UY5hD5DgwnPB9DPPVVkjGenN'
     secret_key: 'wxhyyGEpTtajKLDOuTUUBAUopTzqEkSp'
     dev_pid: 1936   # 1936: 普通话远场，1536：普通话(支持简单的英文识别)，80001：ASR极速版（请使用自己的百度语音账户再使用）
-    per: 4  # 发音人选择 0：女生；1：男生；3：度逍遥；4：度丫丫
+    per: 0  # 发音人选择 0：女生；1：男生；3：度逍遥；4：度丫丫
     lan: 'zh'
 
 # NLU 引擎
