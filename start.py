@@ -48,6 +48,7 @@ class XYRobot(object):
                 if (u'退下') in outputtext:
                     self.recording = False
                     os.system("sudo mpg123 staticData/sysvoices/sysvoice6.mp3")
+                    record.speech('那我退下了，拜拜')
                     pixels.off()
                 
                 if (u'开风扇') in outputtext:

@@ -37,6 +37,17 @@ aipSpeech = AipSpeech(APP_ID, API_KEY, SECRET_KEY)
 
 baidu = BaiduVoiceApi(appkey=API_KEY,secretkey=SECRET_KEY)
 
+def speech(_str):
+    result  = aipSpeech.synthesis(_str, 'zh', 1, {
+        'vol': 5, 'per': config.get('/baidu_yuyin/per',0),
+    })
+    # 识别正确返回语音二进制 错误则返回dict 参照下面错误码
+    if not isinstance(result, dict):
+        fileName = 'temp.mp3'
+        with open(fileName, 'wb') as f:
+            f.write(result)
+        os.system('mpg123 '+fileName)
+
 def generator_list(list):
     for l in list:
         yield l
