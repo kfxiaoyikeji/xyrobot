@@ -18,8 +18,6 @@ import base64
 import requests
 
 class XYRobot(object):
-    #判断是否可以进行录音
-    recording = True
     src = Source(rate=16000, channels=4, frames_size=320)
     ch1 = ChannelPicker(channels=4, pick=1)
     #这里需要填写pmdl的绝对路径
@@ -40,31 +38,29 @@ class XYRobot(object):
             print('detected {} at direction {} is {}'.format(keyword, position,direction))
             pixels.speak(voice)
             print(str(keyword)+voice)
-            self.recording = True
             #开始录音
-            if self.recording:
-                outputtext = record.record()
-                
-                if (u'退下') in outputtext:
-                    self.recording = False
-                    os.system("sudo mpg123 staticData/sysvoices/sysvoice6.mp3")
-                    record.speech('那我退下了，拜拜')
-                    pixels.off()
-                
-                if (u'开风扇') in outputtext:
-                    os.system("sudo mpg123 turnon.mp3")
-        
-        
-                if (u'快一点') in outputtext: 
-                    os.system("sudo mpg123 faster.mp3")
-        
-                            
-                if (u'慢一点') in outputtext:
-                    os.system("sudo mpg123 lower.mp3")
-        
-        
-                if (u'关风扇') in outputtext:
-                    os.system("sudo mpg123 off.mp3")
+            outputtext = record.record()
+            
+            if (u'退下') in outputtext:
+                self.recording = False
+                os.system("sudo mpg123 staticData/sysvoices/sysvoice6.mp3")
+                record.speech('那我退下了，拜拜')
+                pixels.off()
+            
+            if (u'开风扇') in outputtext:
+                os.system("sudo mpg123 turnon.mp3")
+    
+    
+            if (u'快一点') in outputtext: 
+                os.system("sudo mpg123 faster.mp3")
+    
+                        
+            if (u'慢一点') in outputtext:
+                os.system("sudo mpg123 lower.mp3")
+    
+    
+            if (u'关风扇') in outputtext:
+                os.system("sudo mpg123 off.mp3")
             
             
         self.kws.set_callback(on_detected)
