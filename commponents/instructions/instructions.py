@@ -32,6 +32,12 @@ def instructionsFunc(text,record,pixels):
         os.system("sudo mpg123 off.mp3")
         result = True
         
+    if result == False:
+        #这里是学说话，主人说一句她说一句
+        #record.speech(text)
+        
+        #使用
+        
     return {'result':result,'isQuit':isQuit}
         
 # 自定义线程函数。
