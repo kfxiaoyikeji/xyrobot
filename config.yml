@@ -7,6 +7,10 @@ timezone: HKT
 #机器人所在地
 location: '北京'
 
+#极客模式，默认不开启
+jike: true
+
+
 # led灯配置
 # led的正极针脚为5
 # 该库使用Broadcom（BCM）引脚编号作为GPIO引脚，而不是物理（BOARD）编号。 

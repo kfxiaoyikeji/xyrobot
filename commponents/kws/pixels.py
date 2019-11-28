@@ -83,6 +83,7 @@ class Pixels:
         if self.last_direction != None:
             position = self.last_direction
             print(position)
+            '''
             if (position >= 337.5 and position <= 360) or (position >= 0 and position <= 22.5) :
                 return 'b' #正后方
             if (position > 22.5 and position <= 67.5):
@@ -99,6 +100,24 @@ class Pixels:
                 return 'r'#正右方
             if (position > 292.5 and position < 337.5):
                 return 'rb'#右后方
+            '''
+            
+            if (position >= 337.5 and position <= 360) or (position >= 0 and position <= 22.5) :
+                return '正后方' #正后方
+            if (position > 22.5 and position <= 67.5):
+                return '左后方'#左后方
+            if (position > 67.5 and position <= 112.5):
+                return '正左方'#正左方
+            if (position > 112.5 and position <= 157.5):
+                return '左前方'#左前方
+            if (position > 157.5 and position <= 202.5):
+                return '正前方'#正前方
+            if (position > 202.5 and position <= 247.5):
+                return '右前方'#右前方
+            if (position > 247.5 and position <= 292.5):
+                return '正右方'#正右方
+            if (position > 292.5 and position < 337.5):
+                return '右后方'#右后方
         else:
             return ''
         

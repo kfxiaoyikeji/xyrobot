@@ -3,6 +3,7 @@ import time
 import os
 import random
 import signal,sys
+from threading import Thread
 from common import config, constants
 from voice_engine.source import Source
 from voice_engine.channel_picker import ChannelPicker
@@ -11,6 +12,7 @@ from voice_engine.doa_respeaker_4mic_array import DOA
 from commponents.kws.pixels import pixels
 
 from commponents.baidu_STT import record
+from commponents.instructions import instructions
 
 # Base64编码是一种“防君子不防小人”的编码方式 生成的编码可逆，后一两位可能有“=”，生成的编码都是ascii字符
 import base64
@@ -18,6 +20,9 @@ import base64
 import requests
 
 class XYRobot(object):
+    
+    jike = config.get('jike',False)
+    
     src = Source(rate=16000, channels=4, frames_size=320)
     ch1 = ChannelPicker(channels=4, pick=1)
     #这里需要填写pmdl的绝对路径
@@ -27,6 +32,7 @@ class XYRobot(object):
     doa = DOA(rate=16000)
     
     def __init__(self):
+        print('极客模式:'+str(self.jike))
         self.src.link(self.ch1)
         self.ch1.link(self.kws)
         self.src.link(self.doa)
@@ -36,31 +42,23 @@ class XYRobot(object):
             voice = os.path.join(constants.DATA_PATH,'sysvoices','sysvoice'+str(random.randint(1,8))+'.mp3')
             direction = pixels.positionToDirection()
             print('detected {} at direction {} is {}'.format(keyword, position,direction))
+            #这里是唤醒后进行打招呼的语音播放
             pixels.speak(voice)
             print(str(keyword)+voice)
-            #开始录音
-            outputtext = record.record()
             
-            if (u'退下') in outputtext:
-                self.recording = False
-                os.system("sudo mpg123 staticData/sysvoices/sysvoice6.mp3")
-                record.speech('那我退下了，拜拜')
-                pixels.off()
+            record.speech('你在我'+direction)
             
-            if (u'开风扇') in outputtext:
-                os.system("sudo mpg123 turnon.mp3")
-    
-    
-            if (u'快一点') in outputtext: 
-                os.system("sudo mpg123 faster.mp3")
-    
-                        
-            if (u'慢一点') in outputtext:
-                os.system("sudo mpg123 lower.mp3")
-    
-    
-            if (u'关风扇') in outputtext:
-                os.system("sudo mpg123 off.mp3")
+            if self.jike:
+                print('进入极客模式')
+                # 创建线程01，不指定参数
+                thread_01 = Thread(target=instructions.jikeThread, args=("jikeThread01",record,pixels,))
+                # 启动线程01
+                thread_01.start()
+            else:
+                #开始录音
+                outputtext = record.record()
+                #这里是指令，语音识别后返回文字，将文字传入instructionsFunc，进行处理和播放
+                instructions.instructionsFunc(outputtext,record,pixels)
             
             
         self.kws.set_callback(on_detected)
